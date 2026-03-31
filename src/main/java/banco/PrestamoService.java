@@ -10,7 +10,18 @@ public class PrestamoService {
 
     public String registrarPrestamo(String clienteId, double monto,
                                     int plazoMeses, double cuotaMensual) {
-        return "";
+
+        Cliente cliente = clienteRepository.buscarPorId(clienteId);
+
+        if (cliente.getScoreCrediticio() < 600) {
+            return "Préstamo rechazado: score crediticio insuficiente";
+        }
+
+        if (cliente.isTieneDeudas()) {
+            return "Préstamo rechazado: el cliente tiene deudas pendientes";
+        }
+
+        return "Préstamo aprobado";
     }
 }
 
