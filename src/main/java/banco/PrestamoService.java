@@ -13,15 +13,22 @@ public class PrestamoService {
 
         Cliente cliente = clienteRepository.buscarPorId(clienteId);
 
-        if (cliente.getScoreCrediticio() < 600) {
+        if (!tieneScoreSuficiente(cliente)) {
             return "Préstamo rechazado: score crediticio insuficiente";
         }
 
-        if (cliente.isTieneDeudas()) {
+        if (tieneDeudas(cliente)) {
             return "Préstamo rechazado: el cliente tiene deudas pendientes";
         }
 
         return "Préstamo aprobado";
     }
-}
 
+    private boolean tieneScoreSuficiente(Cliente cliente) {
+        return cliente.getScoreCrediticio() >= 600;
+    }
+
+    private boolean tieneDeudas(Cliente cliente) {
+        return cliente.isTieneDeudas();
+    }
+}
